@@ -1,0 +1,120 @@
+This is a simple guide for how API can be used and fetched data with.
+
+You can see in the Swagger documentations more information apart from the one provided in this - 
+http://localhost:8080/swagger-ui/index.html
+
+-----------------------------------------------------------------------------------------------------
+
+Some steps to get the project in your local and run in your favourite id
+Open git bash and then enter commands-
+git init
+git clone https://github.com/aakash250798/Indusspay.git
+
+
+Now open your favourite IDE and open terminal or git in ur project folder where u hae cloned the project.. and run command
+mvn install
+java -jar target/Indusspay-0.0.1-SNAPSHOT.jar
+
+--------------------------------------------------------------------------------------------------------
+Now the APIs are fetched with the following commands and RequestBody 
+
+as below mentioned - 
+
+
+POST request to user/add
+create requset body to add user and its bank details.
+On success return 200 response code.					
+
+=> localhost:8080/user/add , POST
+
+Format -
+{
+    "userId":2,
+    "firstName":"Akash",
+    "lastName":"Sharma",
+    "email":"abc@gmail.com",
+    "phone":"799829308",
+    "userBank":{       
+      "bankName": "SBI",
+      "bankIfsc": "SBIN000123",
+      "accountNumber": "250020098325"
+    }
+}
+
+ or u can add individully user and then bank details as-
+
+{
+"userId":2,
+    "firstName":"Akash",
+    "lastName":"Sharma",
+    "email":"abc@gmail.com",
+    "phone":"799829308"
+} 
+and bank details - using the localhost:8080/bank/add , POST
+
+{
+      "userId": 2,
+      "bankName": "SBI",
+      "bankIfsc": "SBIN000123",
+      "accountNumber": "250000098325"
+  }
+
+in above userId should match the added user .
+
+--------------------------------------------------------------------------
+POST request to /txn/add/{userId}
+withn the above request body.
+add random generated txnId.
+which stores the data and return 200 response code.
+do all validation for amount fields as it must not be less than 0.	
+
+
+=> localhost:8080/txn/add/{id} (id shud be for already present user), POST
+
+{
+        
+      "customerName": "John",
+      "service": "UPI",
+      "amount": 156,
+      "gst": 0.18,
+      "commission": 10
+      
+}
+
+------------------------------------------------------------------------------------
+
+
+
+POST request to /txn/get/details
+withn the above request body, accept list of userId where if list is null fetch all user data. 
+
+
+This question I didnt understand well so made an API which will fetch all the user details of user with its txn and bank details
+
+=> localhost:8080/txn/get/details, GET
+ 
+-------------------------------------------------------------------------------------------
+
+
+GET request to /txn/amount/{initial_range}/{final_range}:
+Accept request param for userId.
+returns a collection of all txns for given userId whose amount is between the initial and the final range supplied
+The response code is 200, and the response body is an user details, bank details and array of txns in the amount range provided.
+Fetch data in single sql query call.
+In case there are no txns txns return status code 400.
+
+=> localhost:8080/txn/amount/{initial_range}/{final_range}?userId={userId}, GET
+Like this - localhost:8080/txn/amount/500/800?userId=2
+
+
+------------------------------------------------------------------------------------------------------------
+ 
+GET request to /sort/amount:
+returns a collection of all txns sorted by their amount
+The response code is 200 and the response body is an array of the txns sorted in ascending order of amount.
+
+=> localhost:8080/sort/amount, GET
+
+
+
+I have made some other APIs along with this, which u can see in swagger documentation.
