@@ -16,7 +16,7 @@ public class BankController {
     BankService service;
 
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{id}/")
     public UserBank getById(@PathVariable int id){
         return service.getByid(id);
     }
